@@ -130,9 +130,8 @@ export function AddTransactionForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Receipt Scanner - Only show in create mode */}
-      {!editMode && <ReceiptScanner onScanComplete={handleScanComplete} />}
-
+ 
+      
       {/* Type */}
       <div className="space-y-2">
         <label className="text-sm font-medium">Type</label>
