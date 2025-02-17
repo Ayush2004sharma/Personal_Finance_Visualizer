@@ -79,32 +79,20 @@ export function CreateAccountDrawer({ children }) {
         <DrawerHeader>
           <DrawerTitle>Create New Account</DrawerTitle>
         </DrawerHeader>
+
         <div className="px-4 pb-4">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <label
-                htmlFor="name"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Account Name
-              </label>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Account Name */}
+            <FormGroup label="Account Name" error={errors.name}>
               <Input
                 id="name"
                 placeholder="e.g., Main Checking"
                 {...register("name")}
               />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
-            </div>
+            </FormGroup>
 
-            <div className="space-y-2">
-              <label
-                htmlFor="type"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Account Type
-              </label>
+            {/* Account Type */}
+            <FormGroup label="Account Type" error={errors.type}>
               <Select
                 onValueChange={(value) => setValue("type", value)}
                 defaultValue={watch("type")}
@@ -117,18 +105,10 @@ export function CreateAccountDrawer({ children }) {
                   <SelectItem value="SAVINGS">Savings</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.type && (
-                <p className="text-sm text-red-500">{errors.type.message}</p>
-              )}
-            </div>
+            </FormGroup>
 
-            <div className="space-y-2">
-              <label
-                htmlFor="balance"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Initial Balance
-              </label>
+            {/* Initial Balance */}
+            <FormGroup label="Initial Balance" error={errors.balance}>
               <Input
                 id="balance"
                 type="number"
@@ -136,31 +116,26 @@ export function CreateAccountDrawer({ children }) {
                 placeholder="0.00"
                 {...register("balance")}
               />
-              {errors.balance && (
-                <p className="text-sm text-red-500">{errors.balance.message}</p>
-              )}
-            </div>
+            </FormGroup>
 
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <div className="space-y-0.5">
-                <label
-                  htmlFor="isDefault"
-                  className="text-base font-medium cursor-pointer"
-                >
-                  Set as Default
-                </label>
-                <p className="text-sm text-muted-foreground">
-                  This account will be selected by default for transactions
-                </p>
+            {/* Set as Default Switch */}
+            <FormGroup label="Set as Default" error={null}>
+              <div className="flex items-center justify-between rounded-lg border p-3">
+                <div className="space-y-0.5">
+                  <p className="text-sm text-muted-foreground">
+                    This account will be selected by default for transactions
+                  </p>
+                </div>
+                <Switch
+                  id="isDefault"
+                  checked={watch("isDefault")}
+                  onCheckedChange={(checked) => setValue("isDefault", checked)}
+                />
               </div>
-              <Switch
-                id="isDefault"
-                checked={watch("isDefault")}
-                onCheckedChange={(checked) => setValue("isDefault", checked)}
-              />
-            </div>
+            </FormGroup>
 
-            <div className="flex gap-4 pt-4">
+            {/* Action Buttons */}
+            <div className="flex gap-4 pt-6">
               <DrawerClose asChild>
                 <Button type="button" variant="outline" className="flex-1">
                   Cancel
@@ -185,5 +160,21 @@ export function CreateAccountDrawer({ children }) {
         </div>
       </DrawerContent>
     </Drawer>
+  );
+}
+
+// Form Group Component for Reusability
+function FormGroup({ label, error, children }) {
+  return (
+    <div className="space-y-2">
+      <label
+        htmlFor={label.toLowerCase()}
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        {label}
+      </label>
+      {children}
+      {error && <p className="text-sm text-red-500">{error.message}</p>}
+    </div>
   );
 }
